@@ -7,22 +7,32 @@ $(document).ready(function() {
 
 	addLampLogic();
 
-	$("#MenuAnimationButton").click(function() {
-		if(AnimButtonIsShow)
-			AnimButtons.forEach(function(element) {element.hide(300);});
-		else
-			AnimButtons.forEach(function(element) {element.show(300);});
-		AnimButtonIsShow = !AnimButtonIsShow;
-	});
-
-	$("#MenuLampButton").click(function() {
-		if(LampButtonIsShow)
-			LampButtons.forEach(function(element) {element.hide(300);});
-		else
-			LampButtons.forEach(function(element) {element.show(300);});
-		LampButtonIsShow = !LampButtonIsShow;
-	});
+	appendClickArr($("#MenuAnimationButton"), AnimButtons, AnimButtonIsShow);
+	appendClickArr($("#MenuLampButton"), LampButtons, LampButtonIsShow);
+	appendClick($("#InfoButton"), InfoBlock, InfoBlockIsShow)
 });
+
+function appendClickArr (element, controlElement, logic)
+{
+	element.click(function() {
+		if(logic)
+			controlElement.forEach(function(element) {element.hide(300);});
+		else
+			controlElement.forEach(function(element) {element.show(300);});
+		logic = !logic;
+	});
+}
+
+function appendClick (element, controlElement, logic)
+{
+	element.click(function() {
+		if(logic)
+			controlElement.hide(300);
+		else
+			controlElement.show(300);
+		logic = !logic;
+	});
+}
 
 function InitAll() 
 {
@@ -33,11 +43,14 @@ function InitAll()
     i = 0;
     MenuButtons[i++] = $('#MenuAnimationButton');
     MenuButtons[i++] = $('#MenuLampButton');
+    MenuButtons[i++] = $('#InfoButton');
 
     i = 0;
     LampButtons[i++] = $('#LampButton_White');
     LampButtons[i++] = $('#LampButton_Red');
     LampButtons[i++] = $('#LampButton_Blue');
+
+    InfoBlock = $('#InfoBlock');
 }
 
 function HideAll() 
@@ -45,6 +58,7 @@ function HideAll()
     AnimButtons.forEach(function(element) {element.hide();});
     MenuButtons.forEach(function(element) {element.hide();});
     LampButtons.forEach(function(element) {element.hide();});
+    InfoBlock.hide();
 }
 
 function addLampLogic()

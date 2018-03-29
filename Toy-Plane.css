@@ -52,6 +52,7 @@ body {
   width: 30px;
   height: 30px;
   cursor: pointer;
+  position: absolute;
 }
 
 .BGAnimation {
@@ -94,4 +95,44 @@ body {
 
 .BGBlue {
   background-color: blue;
+}
+
+.InfoBG {
+  background: url(assets/info.svg) no-repeat center/cover;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+#InfoBlock {
+  position: absolute;
+  right: 10px;
+  bottom: 60px;
+  width: 300px;
+  border: 2px double gray;
+  border-radius: 5px;
+}
+
+#InfoBlock p {
+  margin: 5px;
+  text-align: justify;
+  font-size: 18px;
+}
+
+A {
+  color: #0068a5; 
+}
+A:visited {
+  color: #0068a5; 
+}
+
+A:active {
+  color: #0068a5;
+}
+
+.Absolute {
+  position: absolute;
 }
