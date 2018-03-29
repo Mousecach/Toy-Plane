@@ -9,12 +9,22 @@ var m_cfg       = require("config");
 var m_data      = require("data");
 var m_preloader = require("preloader");
 var m_ver       = require("version");
+var m_lights    = require("lights");
 
 // detect application mode
 var DEBUG = (m_ver.type() == "DEBUG");
 
 // automatically detect assets path
 var APP_ASSETS_PATH = m_cfg.get_assets_path("Toy-Plane");
+
+// Custom vars
+var ShowUI;
+var Lamps;
+var LampColor = {
+    blue: 0,
+    red: 1,
+    white: 2
+}
 
 /**
  * export the method to initialize the app (called at the bottom of this file)
@@ -78,11 +88,38 @@ function load_cb(data_id, success) {
     m_app.enable_camera_controls();
 
     // place your code here
+    ShowUI();
 
+    Lamps = m_lights.get_lamps("SUN");
+    console.log(Lamps);
 }
 
+exports.setShowUI = function(_value) 
+{
+    ShowUI = _value;
+}
+
+exports.LampController = function(_color, _isEnable) 
+{
+   switch(_color) 
+   {
+    case Colors.white:
+        m_lights.set_light_energy(Lamps[LampColor.white], _isEnable? 0: 1);
+    break;
+    case Colors.red:
+        m_lights.set_light_energy(Lamps[LampColor.red], _isEnable? 0: 1);
+    break;
+    case Colors.blue:
+        m_lights.set_light_energy(Lamps[LampColor.blue], _isEnable? 0: 1);
+    break;
+   }
+}
 
 });
 
-// import the app module and start the app by calling the init method
-b4w.require("Toy-Plane_main").init();
+var app = b4w.require("Toy-Plane_main");
+
+app.setShowUI(ShowIUFunc);
+app.init();
+
+OnOffLamp = app.LampController;

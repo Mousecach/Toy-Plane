@@ -9,15 +9,28 @@
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
 
 <link rel="stylesheet" href="Toy-Plane.css" type="text/css">
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="Variables.js"></script>
 <script type="text/javascript" src="..\..\dist\b4w.js"></script>
-
+<script type="text/javascript" src="UILogic.js"></script>
 <script type="text/javascript" src="Toy-Plane.js"></script>
 
 </head>
 
 <body>
   <div id="main_canvas_container"></div>
+
+  <div id="Menu">
+	  <div id="MenuAnimationButton" class="MenuButton BGAnimation"></div>	
+	  <div id="MenuLampButton" class="MenuButton BGLamp"></div>	
+  </div>
+
+  <div id="AnimButton_AirplaneScrew" class="AnchorButton BGAnimation"></div>
+  <div id="AnimButton_Cockpit" class="AnchorButton BGAnimation"></div>
+
+  <div id="LampButton_White" class="AnchorButton BGLampActive"></div>
+  <div id="LampButton_Red" class="AnchorButton BGLampActiveRed"></div>
+  <div id="LampButton_Blue" class="AnchorButton BGLampActiveBlue"></div>
 </body>
 
 </html>
