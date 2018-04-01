@@ -6,11 +6,54 @@ $(document).ready(function() {
     HideAll();
 
 	addLampLogic();
+	appendAnimPlay();
 
 	appendClickArr($("#MenuAnimationButton"), AnimButtons, AnimButtonIsShow);
 	appendClickArr($("#MenuLampButton"), LampButtons, LampButtonIsShow);
 	appendClick($("#InfoButton"), InfoBlock, InfoBlockIsShow)
+
 });
+
+function PlayAnimation()
+{
+	interpolatedValue += step;
+	if(interpolatedValue <= 1)
+		setTimeout(PlayAnimation, RefreshRate);
+	else
+	{
+		AnimLogic.value = !AnimLogic.value;
+		ShowHideElements(AnimButtons, true);
+		AnimButtonIsShow = true;
+	}
+
+	RotateBone(AnimTemp.startPos, AnimTemp.endPos, Math.max(Math.min(interpolatedValue, 1), 0), AnimTemp.bone);
+}
+
+function CocpitAnimLogic(inverce = false)
+{
+	interpolatedValue = 0;
+	step = 1 / (CocpitAnimData.animTime / RefreshRate);
+	AnimTemp = AnimData(CocpitAnimData, inverce);
+
+	RotateBone(AnimTemp.startPos, AnimTemp.endPos, interpolatedValue, AnimTemp.bone);
+	AnimLogic = CocpitOpen;
+	setTimeout(PlayAnimation, RefreshRate);
+
+	ShowHideElements(AnimButtons, false);
+	AnimButtonIsShow = false;
+}
+
+function appendAnimPlay() 
+{
+	$('#AnimButton_Cockpit').click(function() 
+	{
+		
+		if(CocpitOpen.value)
+			CocpitAnimLogic(true);
+		else
+			CocpitAnimLogic();
+	});
+}
 
 function appendClickArr (element, controlElement, logic)
 {
@@ -51,6 +94,14 @@ function InitAll()
     LampButtons[i++] = $('#LampButton_Blue');
 
     InfoBlock = $('#InfoBlock');
+}
+
+function ShowHideElements(_element, isShow)
+{
+	if(isShow)
+		_element.forEach(function(element) {element.show(300);});
+	else
+		_element.forEach(function(element) {element.hide(300);});
 }
 
 function HideAll() 

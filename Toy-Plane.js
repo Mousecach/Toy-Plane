@@ -10,6 +10,9 @@ var m_data      = require("data");
 var m_preloader = require("preloader");
 var m_ver       = require("version");
 var m_lights    = require("lights");
+var m_tsr       = require("tsr");
+var m_armat     = require("armature");
+var m_scs       = require("scenes");
 
 // detect application mode
 var DEBUG = (m_ver.type() == "DEBUG");
@@ -25,6 +28,9 @@ var LampColor = {
     red: 1,
     white: 2
 }
+var Rig;
+
+var tsr_tmp = new Float32Array(8);
 
 /**
  * export the method to initialize the app (called at the bottom of this file)
@@ -91,7 +97,7 @@ function load_cb(data_id, success) {
     ShowUI();
 
     Lamps = m_lights.get_lamps("SUN");
-    console.log(Lamps);
+    Rig = m_scs.get_object_by_name("Armature");    
 }
 
 exports.setShowUI = function(_value) 
@@ -115,6 +121,15 @@ exports.LampController = function(_color, _isEnable)
    }
 }
 
+exports.RotateBone = function(startTSR, endTSR, interpolatedValue, bone)
+{
+   var Start_tsr = m_tsr.from_values(startTSR[0], startTSR[1], startTSR[2], startTSR[3], startTSR[4], startTSR[5], startTSR[6], startTSR[7]);
+   var End_tsr = m_tsr.from_values(endTSR[0], endTSR[1], endTSR[2], endTSR[3], endTSR[4], endTSR[5], endTSR[6], endTSR[7]);
+    
+    m_tsr.interpolate(Start_tsr, End_tsr, interpolatedValue, tsr_tmp);
+    m_armat.set_bone_tsr_rel(Rig, bone, tsr_tmp);
+}
+
 });
 
 var app = b4w.require("Toy-Plane_main");
@@ -123,3 +138,4 @@ app.setShowUI(ShowIUFunc);
 app.init();
 
 OnOffLamp = app.LampController;
+RotateBone = app.RotateBone;
