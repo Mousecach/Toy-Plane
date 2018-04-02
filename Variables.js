@@ -83,72 +83,73 @@ function AirplainScrewAnim()
 	var TSR = [[0, 0, 0, 1, 0, 0, 0, 1],
 			   [0, 0, 0, 1, 0, -0.707, 0, 0.707],
 			   [0, 0, 0, 1, 0, -1, 0, 0],
-			   [0, 0, 0, 1, 0, -0.707, 0, -0.707]];
+			   [0, 0, 0, 1, 0, -0.707, 0, -0.707],
+			   [0, 0, 0, 1, 0, 0, 0, 1]];
 	var TSRIndex = 1;
 	var startPos;
 	var endPos;
 	var bone = "AirplaneScewBone";
 	var animTime = 1000;
 	var animTimeMax = 1000;
-	var animTimeMix = 250;
+	var animTimeMin = 50;
+	var animSpeedChange = 200 * (RefreshRate / 1000);
 	var step = 1 / (animTime / RefreshRate);
 	var interpolatedValue = 0;
-	var AnimationIsPlaying = false;
 	var AnimType = {
 		starting: 0,
 		stopping: 1,
-		work: 2,
-		stop: 3
 	};
-	var curAnimType;
+	var curAnimType = AnimType.stopping;
 
 	var PlayAnimation = function () 
 	{
+		console.log("animTime = " + animTime);
 		switch (curAnimType) {
 			case AnimType.starting:
-				
+			animTime = Math.max(animTime - animSpeedChange, animTimeMin);
 				break;
+			case AnimType.stopping:
+			animTime = Math.min(animTime + animSpeedChange, animTimeMax);
+			break;
 		}
-
-
+		step = 1 / (animTime / RefreshRate);
 		interpolatedValue += step;
+		
 		if(interpolatedValue >= 1)
 		{
 			interpolatedValue = 0;
 			TSRIndex++;
-			if(TSRIndex == 4)
-			{
-				startPos = TSR[TSRIndex - 1];
-				endPos = TSR[0];
+			if(TSRIndex == 5)
 				TSRIndex = 1;
-			}
-			else
-			{
-				startPos = TSR[TSRIndex - 1];
-				endPos = TSR[TSRIndex];
-			}
+
+			startPos = TSR[TSRIndex - 1];
+			endPos = TSR[TSRIndex];
 		}
+
+		if(!(curAnimType === AnimType.stopping && animTime === animTimeMax && interpolatedValue === 0 && TSRIndex === 1))
 		setTimeout(PlayAnimation, RefreshRate);
+
 		RotateBone(startPos, endPos, Math.max(Math.min(interpolatedValue, 1), 0), bone);
 	};
 
 	this.StartStopAnimation = function () 
 	{
 		interpolatedValue = 0;
-		if(AnimationIsPlaying)
-		{
+		switch (curAnimType) {
+			case AnimType.starting:
 			curAnimType = AnimType.stopping;
-		}
-		else
-		{
+				break;
+			case AnimType.stopping:
+			curAnimType = AnimType.starting;
+
 			if(!startPos && !endPos)
 			{
-				startPos = TSR[1];
-				endPos = TSR[0];
+				startPos = TSR[0];
+				endPos = TSR[1];
 			}
-			curAnimType = AnimType.starting;
 			RotateBone(startPos, endPos, interpolatedValue, bone);
 			setTimeout(PlayAnimation, RefreshRate);
+				break;
 		}
 	};	
 }
