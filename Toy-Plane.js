@@ -123,8 +123,8 @@ exports.LampController = function(_color, _isEnable)
 
 exports.RotateBone = function(startTSR, endTSR, interpolatedValue, bone)
 {
-   var Start_tsr = m_tsr.from_values(startTSR[0], startTSR[1], startTSR[2], startTSR[3], startTSR[4], startTSR[5], startTSR[6], startTSR[7]);
-   var End_tsr = m_tsr.from_values(endTSR[0], endTSR[1], endTSR[2], endTSR[3], endTSR[4], endTSR[5], endTSR[6], endTSR[7]);
+    var Start_tsr = m_tsr.from_values(startTSR[0], startTSR[1], startTSR[2], startTSR[3], startTSR[4], startTSR[5], startTSR[6], startTSR[7]);
+    var End_tsr = m_tsr.from_values(endTSR[0], endTSR[1], endTSR[2], endTSR[3], endTSR[4], endTSR[5], endTSR[6], endTSR[7]);
     
     m_tsr.interpolate(Start_tsr, End_tsr, interpolatedValue, tsr_tmp);
     m_armat.set_bone_tsr_rel(Rig, bone, tsr_tmp);

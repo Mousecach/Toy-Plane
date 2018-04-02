@@ -14,44 +14,15 @@ $(document).ready(function() {
 
 });
 
-function PlayAnimation()
-{
-	interpolatedValue += step;
-	if(interpolatedValue <= 1)
-		setTimeout(PlayAnimation, RefreshRate);
-	else
-	{
-		AnimLogic.value = !AnimLogic.value;
-		ShowHideElements(AnimButtons, true);
-		AnimButtonIsShow = true;
-	}
-
-	RotateBone(AnimTemp.startPos, AnimTemp.endPos, Math.max(Math.min(interpolatedValue, 1), 0), AnimTemp.bone);
-}
-
-function CocpitAnimLogic(inverce = false)
-{
-	interpolatedValue = 0;
-	step = 1 / (CocpitAnimData.animTime / RefreshRate);
-	AnimTemp = AnimData(CocpitAnimData, inverce);
-
-	RotateBone(AnimTemp.startPos, AnimTemp.endPos, interpolatedValue, AnimTemp.bone);
-	AnimLogic = CocpitOpen;
-	setTimeout(PlayAnimation, RefreshRate);
-
-	ShowHideElements(AnimButtons, false);
-	AnimButtonIsShow = false;
-}
-
 function appendAnimPlay() 
 {
 	$('#AnimButton_Cockpit').click(function() 
 	{
-		
-		if(CocpitOpen.value)
-			CocpitAnimLogic(true);
-		else
-			CocpitAnimLogic();
+		CocpitAnimData.StartAnimation();
+	});
+	$('#AnimButton_AirplaneScrew').click(function() 
+	{
+		AirplainScrewAnimation.StartStopAnimation();
 	});
 }
 
