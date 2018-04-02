@@ -7,7 +7,6 @@ b4w.register("Toy-Plane_main", function(exports, require) {
 var m_app       = require("app");
 var m_cfg       = require("config");
 var m_data      = require("data");
-var m_preloader = require("preloader");
 var m_ver       = require("version");
 var m_lights    = require("lights");
 var m_tsr       = require("tsr");
@@ -29,8 +28,9 @@ var LampColor = {
     white: 2
 }
 var Rig;
-
 var tsr_tmp = new Float32Array(8);
+
+var Preloader;
 
 /**
  * export the method to initialize the app (called at the bottom of this file)
@@ -55,7 +55,8 @@ function init_cb(canvas_elem, success) {
         return;
     }
 
-    m_preloader.create_preloader();
+    Preloader = document.getElementById("PreloaderContainer");
+    Preloader.style.visibility = "visible";
 
     // ignore right-click on the canvas element
     canvas_elem.oncontextmenu = function(e) {
@@ -78,7 +79,13 @@ function load() {
  * update the app's preloader
  */
 function preloader_cb(percentage) {
-    m_preloader.update_preloader(percentage);
+    var percantage_num = document.getElementById("PersentNumeric");
+    percantage_num.innerHTML = percentage + "%";	 
+
+    if (percentage == 100) {
+        Preloader.style.visibility = "hidden";
+        return;
+    }
 }
 
 /**

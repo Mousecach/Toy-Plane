@@ -135,3 +135,44 @@ A:active {
 .Absolute {
   position: absolute;
 }
+
+#PreloaderContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: #0e0e0e;
+  visibility: hidden;
+  color: white;
+}
+
+.ImgContainer {
+  position: absolute;
+  top: 25%;
+  width: 100%;
+  height: 149px;
+}
+
+.ImgContainer img {
+  display: block;
+  margin: auto;
+}
+
+#PreloaderContainer h1{
+  position: absolute;
+  top: 45%;
+  width: 100%;
+  text-align:  center;
+}
+
+#PersentNumeric {
+  position: absolute;
+  top: 55%;
+  width: 100%;
+  text-align:  center;
+}
+
+h1 h2 {
+  font-style: italic;
+}
