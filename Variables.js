@@ -36,8 +36,10 @@ function CocpitAnim()
 	var step = 0;
 	var interpolatedValue = 0;
 	var CocpitIsOpen = false;
+	
+	this.Audio = $('#CocpitAudio').get(0);
 
-	var PlayAnimation = function () 
+	var PlayAnimation = function ()
 	{
 		interpolatedValue += step;
 		if(interpolatedValue <= 1)
@@ -45,9 +47,7 @@ function CocpitAnim()
 		else
 		{
 			CocpitIsOpen = !CocpitIsOpen;
-
-			ShowHideElements(AnimButtons, true);
-			AnimButtonIsShow = true;
+			UILogic(true);
 		}
 
 		RotateBone(startPos, endPos, Math.max(Math.min(interpolatedValue, 1), 0), bone);
@@ -72,9 +72,15 @@ function CocpitAnim()
 		RotateBone(startPos, endPos, interpolatedValue, bone);
 		setTimeout(PlayAnimation, RefreshRate);
 
-		ShowHideElements(AnimButtons, false);
-		AnimButtonIsShow = false;		
+		UILogic(false);
 	};	
+
+	function UILogic(_value) 
+	{
+		ShowHideElements(AnimButtons, _value);
+		AnimButtonIsShow = _value;
+		PlayCocpitAudio(!_value);
+	}
 }
 var CocpitAnimData = new CocpitAnim();
 
@@ -100,10 +106,12 @@ function AirplainScrewAnim()
 		stopping: 1,
 	};
 	var curAnimType = AnimType.stopping;
+	var audioRate;
+
+	this.Audio;
 
 	var PlayAnimation = function () 
 	{
-		console.log("animTime = " + animTime);
 		switch (curAnimType) {
 			case AnimType.starting:
 			animTime = Math.max(animTime - animSpeedChange, animTimeMin);
@@ -114,6 +122,7 @@ function AirplainScrewAnim()
 		}
 		step = 1 / (animTime / RefreshRate);
 		interpolatedValue += step;
+		audioRate = animTimeMin / animTime;
 		
 		if(interpolatedValue >= 1)
 		{
@@ -127,9 +136,13 @@ function AirplainScrewAnim()
 		}
 
 		if(!(curAnimType === AnimType.stopping && animTime === animTimeMax && interpolatedValue === 0 && TSRIndex === 1))
-		setTimeout(PlayAnimation, RefreshRate);
+			setTimeout(PlayAnimation, RefreshRate);
+		else
+			PlayPropellerAudio("stop");
 
 		RotateBone(startPos, endPos, Math.max(Math.min(interpolatedValue, 1), 0), bone);
+		PlayPropellerAudio("speed", audioRate);
+
 	};
 
 	this.StartStopAnimation = function () 
@@ -149,11 +162,17 @@ function AirplainScrewAnim()
 			}
 			RotateBone(startPos, endPos, interpolatedValue, bone);
 			setTimeout(PlayAnimation, RefreshRate);
+
+			PlayPropellerAudio("play");
 				break;
 		}
 	};	
 }
 var AirplainScrewAnimation = new AirplainScrewAnim();
+
+//Audio
+var CocpitAudio;
+var PropellerAudio;
 
 //Functions
 var OnOffLamp;

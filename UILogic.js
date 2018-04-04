@@ -64,7 +64,45 @@ function InitAll()
     LampButtons[i++] = $('#LampButton_Red');
     LampButtons[i++] = $('#LampButton_Blue');
 
-    InfoBlock = $('#InfoBlock');
+	InfoBlock = $('#InfoBlock');
+	
+	CocpitAudio = $('#CocpitAudio').get(0);
+	PropellerAudio = $('#PropellerAudio').get(0);
+	PropellerAudio.volume = 0;
+}
+
+function PlayCocpitAudio(isPlay) 
+{
+	if(isPlay)
+		CocpitAudio.play();
+	else
+	{
+		CocpitAudio.pause();
+		CocpitAudio.currentTime = 0;
+	}
+}
+
+function PlayPropellerAudio(param, value = 0) 
+{
+	switch (param) {
+		case "speed":
+		if(value != PropellerAudio.volume )
+		{
+			PropellerAudio.volume = value;
+			PropellerAudio.playbackRate = value + 0.75;
+			console.log("Speed = " + value);
+		}
+			break;
+		case "play":
+		PropellerAudio.play();
+		console.log("Play");
+			break;
+		case "stop":
+		PropellerAudio.pause();
+		PropellerAudio.currentTime = 0;
+		console.log("Stop");
+			break;
+	}
 }
 
 function ShowHideElements(_element, isShow)
