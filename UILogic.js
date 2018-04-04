@@ -90,17 +90,14 @@ function PlayPropellerAudio(param, value = 0)
 		{
 			PropellerAudio.volume = value;
 			PropellerAudio.playbackRate = value + 0.75;
-			console.log("Speed = " + value);
 		}
 			break;
 		case "play":
 		PropellerAudio.play();
-		console.log("Play");
 			break;
 		case "stop":
 		PropellerAudio.pause();
 		PropellerAudio.currentTime = 0;
-		console.log("Stop");
 			break;
 	}
 }
